@@ -20,7 +20,7 @@ export default function FolderList({ folders }) {
         overflowY: 'auto',
       }}
       subheader={
-        <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+        <Box sx={{display: 'flex', alignItems: 'center', justifyContent: 'space-between'}}>
           <Typography sx={{ fontWeight: 'bold', color: 'white' }}>
             Folders
           </Typography>
