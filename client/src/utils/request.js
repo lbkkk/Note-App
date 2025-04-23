@@ -1,4 +1,4 @@
-import { GRAPHQL_SERVER } from './constants.js';
+import { GRAPHQL_SERVER } from './constants';
 
 export const graphQLRequest = async (payload, options = {}) => {
   if (localStorage.getItem('accessToken')) {

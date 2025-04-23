@@ -1,55 +1,62 @@
-import { Button, Dialog, DialogActions, DialogContent, DialogTitle, IconButton, TextField, Tooltip } from '@mui/material'
-import React, { useEffect, useState } from 'react'
-import { CreateNewFolderOutlined } from '@mui/icons-material'
-import { addNewFolder } from '../utils/folderUtils.js';
+import {
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  IconButton,
+  TextField,
+  Tooltip,
+} from '@mui/material';
+import React, { useEffect, useState } from 'react';
+import { CreateNewFolderOutlined } from '@mui/icons-material';
 import { useSearchParams, useNavigate } from 'react-router-dom';
 
-export default function NewFolder() {
+import { addNewFolder } from '../utils/folderUtils.js';
 
-  const [ newFolderName, setNewFolderName ] = useState();
-  const [ open, setOpen ] = useState(false);
-  const [ searchParams, setSearchParams ] = useSearchParams();
+export default function NewFolder() {
+  const [newFolderName, setNewFolderName] = useState();
+  const [open, setOpen] = useState(false);
+  const [searchParams, setSearchParams] = useSearchParams();
   const navigate = useNavigate();
 
   const popupName = searchParams.get('popup');
 
   const handleOpenPopup = () => {
     // setOpen(true);
-
-    setSearchParams({popup: 'add-folder'})
-  }
-
-  const handleNewFolderNameChange = (e) => {
-    setNewFolderName(e.target.value);
-  }
-
+    setSearchParams({ popup: 'add-folder' });
+  };
   const handleClose = () => {
     // setOpen(false);
     setNewFolderName('');
     navigate(-1);
-  }                       
+  };
+  const handleNewFolderNameChange = (e) => {
+    setNewFolderName(e.target.value);
+  };
 
   const handleAddNewFolder = async () => {
-    const { addFolder } = await addNewFolder({name: newFolderName});
-    console.log({addFolder});
+    const { addFolder } = await addNewFolder({ name: newFolderName });
+    console.log({ addFolder });
 
     handleClose();
-  }
+  };
 
   useEffect(() => {
-    console.log({popupName});
-    if(popupName === 'add-folder') {
+    console.log({popupName})
+    if (popupName === 'add-folder') {
       setOpen(true);
       return;
-    }     
+    }
+
     setOpen(false);
-  },[popupName])
+  }, [popupName])
 
   return (
     <div>
-      <Tooltip title="Add Folder" onClick={handleOpenPopup}>
-        <IconButton size="small">
-          <CreateNewFolderOutlined sx={ {color: 'white'}}/>
+      <Tooltip title='Add Folder' onClick={handleOpenPopup}>
+        <IconButton size='small'>
+          <CreateNewFolderOutlined sx={{ color: 'white' }} />
         </IconButton>
       </Tooltip>
       <Dialog open={open} onClose={handleClose}>
@@ -57,12 +64,13 @@ export default function NewFolder() {
         <DialogContent>
           <TextField
             autoFocus
-            margin="dense"
-            id="name"
-            label="Folder Name"
+            margin='dense'
+            id='name'
+            label='Folder Name'
             fullWidth
-            variant="standard"
-            sx={{width: '400px'}}
+            size='small'
+            variant='standard'
+            sx={{ width: '400px' }}
             autoComplete='off'
             value={newFolderName}
             onChange={handleNewFolderNameChange}
@@ -74,5 +82,5 @@ export default function NewFolder() {
         </DialogActions>
       </Dialog>
     </div>
-  )
+  );
 }

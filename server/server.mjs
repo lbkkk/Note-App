@@ -4,7 +4,6 @@ import { ApolloServer } from '@apollo/server';
 import { ApolloServerPluginDrainHttpServer } from '@apollo/server/plugin/drainHttpServer';
 import { expressMiddleware } from '@apollo/server/express4';
 import cors from 'cors';
-import mockData from './mockData/index.js'; // import mock data từ file mockData/index.js
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 import { resolvers } from './resolvers/index.js';
