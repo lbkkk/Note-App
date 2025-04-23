@@ -15,6 +15,7 @@ import { makeExecutableSchema } from '@graphql-tools/schema';
 import { WebSocketServer } from 'ws';
 import { useServer } from 'graphql-ws/use/ws';
 
+
 dotenv.config(); // load biến môi trường từ file .env
 
 
@@ -161,10 +162,7 @@ app.use(
 
 mongoose.set('strictQuery', false);
 mongoose
-  .connect(URI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  })
+  .connect(URI)
   .then(async () => {
     console.log('Connected to DB');
     await new Promise((resolve) => httpServer.listen({ port: PORT }, resolve));
