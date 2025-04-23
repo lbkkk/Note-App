@@ -4,6 +4,7 @@ import React from 'react'
 import UserMenu from '../components/UserMenu.jsx'
 import FolderList from '../components/FolderList.jsx'
 import { Outlet, useLoaderData } from 'react-router-dom'
+import PushNotification from '../components/PushNotification.jsx'
 
 export default function Home() {
   const { folders } = useLoaderData(); // data folders này là trả về từ loader
@@ -15,7 +16,8 @@ export default function Home() {
       <Typography variant='h4' sx={{ mb: '20px'}}>Note App</Typography> 
       <Box sx={{ display: 'flex', justifyContent: 'right', mb: '10px' }}>
         <UserMenu />
-      </Box>
+        <PushNotification/>
+      </Box> 
 
       {/* height: '50vh' => cao = 1/2 trình duyệt */}
       <Grid
