@@ -1,4 +1,4 @@
-import { graphQLRequest } from "./request";
+import { graphQLRequest } from "./request.js";
 
 export const notesLoader = 
   async ({ params: { folderId }}) => {
@@ -14,12 +14,12 @@ export const notesLoader =
     }`;
 
     const data = await graphQLRequest({
-      query ,
-      variables: {
-       folderId: folderId
-      },
-    }); // gọi hàm graphQLRequest để lấy dữ liệu
-    return data; // trả về data cho router
+      query,
+        variables: {
+          folderId,
+        },
+    });
+    return data;
   };  
 
 export const noteLoader = 

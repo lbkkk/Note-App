@@ -2,19 +2,18 @@
 
 // có thể xem là tương đương với mockData
 
-import mongoose from "mongoose";
+import mongoose from 'mongoose';
 
 const authorSchema = new mongoose.Schema({
-  uid: { // user_id sau khi đăng nhập thành công
+  uid: {
     type: String,
-    required: true 
-  },
-  name: {
-    type: Date,
     required: true,
   },
-}, { timestamps: true } // tự động thêm createdAt và updatedAt vào trong document
-);
+  name: {
+    type: String,
+    required: true
+  }
+}, { timestamps: true });
 
-const AuthorModel = mongoose.model("Author", authorSchema); // tạo model từ schema
-export default AuthorModel; // export model ra ngoài để sử dụng
+const AuthorModel = mongoose.model('Author', authorSchema);
+export default AuthorModel;

@@ -16,7 +16,7 @@ export default function FolderList({folders}) { // truyền danh sách các fold
       subheader={
         <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
           <Typography sx={{ fontWeight: 'bold', color: '#fff' }}>
-            Folders {/* tiêu đề */}
+            Folders
           </Typography>
           <NewFolder />
         </Box>

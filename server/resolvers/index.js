@@ -12,20 +12,26 @@ export const resolvers = {
       return folders;
       // return mockData.folders  
     }, // trả về danh sách folder
-    folder: async (parent, args) => { // args là dữ liệu dc gửi từ phía client lên
-      const foundFolder = await FolderModel.findOne({
-        _id: folderId
-      })
-      return foundFolder
+    folder: async (parent, args) => {
+      const folderId = args.folderId;
+      console.log({ folderId });
+      const foundFolder = await FolderModel.findById(folderId);
+      return foundFolder;
     },
-    note: (parent, args) => {
-      return mockData.notes.find((note) => note.id === args.noteID); // tìm kiếm note theo id
-    }
-
+    note: async (parent, args) => {
+      const noteId = args.noteId;
+      const note = await NoteModel.findById(noteId);
+      return note;
+      // return fakeData.notes.find((note) => note.id === noteId);
+    },
   },
   Folder: {
-    author: (parent, args) => {
-      return mockData.authors.find((author) => author.id === parent.authorId);
+    author: async (parent, args) => {
+      const authorId = parent.authorId; // lấy authorId từ folder
+      const author = await AuthorModel.findOne({
+        uid: authorId
+      }); // tìm kiếm author trong database
+      return author;
     },
     notes: (parent, args) => {
       return mockData.notes.filter((note) => note.folderId === parent.id); // tìm kiếm tất cả các note có folderId = id của folder
@@ -33,22 +39,22 @@ export const resolvers = {
   },
   Mutation: {
     addFolder: async (parent, args, context) => {
-      const newFolder = new FolderModel({...args, authorId: context.uid}); // tạo mới một folder
-      console.log({newFolder});
+      const newFolder = new FolderModel({ ...args, authorId: context.uid });
+      console.log({ newFolder });
       await newFolder.save(); // lưu folder vào database
       return newFolder; // trả về folder vừa tạo
     },
     register: async (parent, args) => {
-      const foundUser = await AuthorModel.findOne({
-        uid: args.uid
-      }); // tìm kiếm author trong database
-      if (foundUser) {
-        const newUser = new AuthorModel(args); // tạo mới một author
-        await newUser.save(); // lưu author vào database
-        return newUser; // trả về author
+      const foundUser = await AuthorModel.findOne({ uid: args.uid });
+
+      if (!foundUser) {
+        const newUser = new AuthorModel(args);
+        await newUser.save();
+        return newUser;
       }
-      return foundUser; // trả về author nếu đã tồn tại
-    } 
+
+      return foundUser;
+    },
   }
 
 }; 

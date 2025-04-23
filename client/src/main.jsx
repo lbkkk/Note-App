@@ -9,11 +9,11 @@ import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
 import './index.css';
 import router from './router';
-import { Container } from '@mui/system'; 
-import './firebase/config.jsx';
+import { Container } from '@mui/system';
+import './firebase/config';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
-    <Container maxWidth="lg" sx={{ textAlign: 'center', marginTop: '50px' }}>
+  <Container maxWidth='lg' sx={{ textAlign: 'center', marginTop: '50px' }}>
     <RouterProvider router={router} />
-    </Container>
-); 
+  </Container>
+);

@@ -89,32 +89,32 @@ const server = new ApolloServer({
   plugins: [ApolloServerPluginDrainHttpServer({ httpServer })],
 })
 
-await server.start(); // thông thường async await phải được bọc trong 1 func => ở đây file .mjs thì không cần bọc await trong 1 func
+await server.start();
 
-const authorizationJWT = async(req, res, next) => {
-  console.log({authorization: req.headers.authorization});  
+const authorizationJWT = async (req, res, next) => {
+  console.log({ authorization: req.headers.authorization });
   const authorizationHeader = req.headers.authorization;
 
   if (authorizationHeader) {
-    const accessToken = authorizationHeader.split(' ')[1]; // lấy access token từ header
+    const accessToken = authorizationHeader.split(' ')[1];
 
     getAuth()
       .verifyIdToken(accessToken)
       .then((decodedToken) => {
-        console.log({decodedToken});
-        res.locals.uid = decodedToken.uid; // uid là id của user trong firebase
+        console.log({ decodedToken });
+        res.locals.uid = decodedToken.uid;
         next();
       })
-      .catch(err => {
-        console.log({err});
+      .catch((err) => {
+        console.log({ err });
         return res.status(403).json({ message: 'Forbidden', error: err });
-      })
+      });
   } else {
-    return res.status(401).json({ message: 'Unauthorized' });
+    next();
+    // return res.status(401).json({ message: 'Unauthorized' });
   }
-}
+};
 
-// cấu hình express middleware
 app.use(
   '/',
   cors(),
@@ -122,28 +122,22 @@ app.use(
   express.json(),
   expressMiddleware(server, {
     context: async ({ req, res }) => {
-      // // lấy thông tin user từ firebase
-      // const authorizationHeader = req.headers.authorization;
-      // const accessToken = authorizationHeader.split(' ')[1]; // lấy access token từ header
-      // const decodedToken = await getAuth().verifyIdToken(accessToken);
-      // console.log({decodedToken});
-      // return { user: decodedToken }; // trả về thông tin user cho resolvers
       return { uid: res.locals.uid }; // uid là id của user trong firebase
     }
   })
 );
 
-mongoose.set('strictQuery', false); // bỏ qua cảnh báo strictQuery
-mongoose.connect(URI, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true
-}).then(async () => {
-  console.log('Connected to MongoDB');
-  await new Promise((resolve) => httpServer.listen({ port: PORT }, resolve)); // Start the server
-  console.log(`🚀 Server ready at http://localhost:4000/`);
-}).catch((err) => {
-  console.error('Error connecting to MongoDB', err);
-});
+mongoose.set('strictQuery', false);
+mongoose
+  .connect(URI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  })
+  .then(async () => {
+    console.log('Connected to DB');
+    await new Promise((resolve) => httpServer.listen({ port: PORT }, resolve));
+    console.log('🚀 Server ready at http://localhost:4000');
+  });
 
 
 
